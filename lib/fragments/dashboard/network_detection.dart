@@ -1,4 +1,5 @@
 import 'package:country_flags/country_flags.dart';
+import 'package:dio/dio.dart';
 import 'package:fl_clash/common/common.dart';
 import 'package:fl_clash/models/models.dart';
 import 'package:fl_clash/state.dart';
@@ -18,6 +19,7 @@ class _NetworkDetectionState extends State<NetworkDetection> {
   final timeoutNotifier = ValueNotifier<bool>(false);
   bool? _preIsStart;
   Function? _checkIpDebounce;
+  CancelToken? cancelToken;
 
   _checkIp() async {
     final appState = globalState.appController.appState;
@@ -28,13 +30,19 @@ class _NetworkDetectionState extends State<NetworkDetection> {
     if (_preIsStart == false && _preIsStart == isStart) return;
     _preIsStart = isStart;
     ipInfoNotifier.value = null;
-    final ipInfo = await request.checkIp();
+    if (cancelToken != null) {
+      cancelToken!.cancel();
+      _preIsStart = null;
+      timeoutNotifier.value == false;
+      cancelToken = null;
+    }
+    cancelToken = CancelToken();
+    final ipInfo = await request.checkIp(cancelToken: cancelToken);
     if (ipInfo == null) {
       timeoutNotifier.value = true;
       return;
-    } else {
-      timeoutNotifier.value = false;
     }
+    timeoutNotifier.value = false;
     ipInfoNotifier.value = ipInfo;
   }
 
@@ -62,7 +70,7 @@ class _NetworkDetectionState extends State<NetworkDetection> {
 
   @override
   Widget build(BuildContext context) {
-    _checkIpDebounce = debounce(_checkIp);
+    _checkIpDebounce ??= debounce(_checkIp);
     return _checkIpContainer(
       ValueListenableBuilder<IpInfo?>(
         valueListenable: ipInfoNotifier,

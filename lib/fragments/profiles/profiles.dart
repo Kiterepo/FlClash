@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:fl_clash/enum/enum.dart';
 import 'package:fl_clash/fragments/profiles/edit_profile.dart';
 import 'package:fl_clash/models/models.dart';
@@ -87,6 +89,24 @@ class _ProfilesFragmentState extends State<ProfilesFragment> {
             },
             icon: const Icon(Icons.sync),
           ),
+          const SizedBox(
+            width: 8,
+          ),
+          IconButton(
+            onPressed: () {
+              final profiles = globalState.appController.config.profiles;
+              showSheet(
+                title: appLocalizations.proxiesSetting,
+                context: context,
+                builder: (_) => SizedBox(
+                  height: 400,
+                  child: ReorderableProfiles(profiles: profiles),
+                ),
+              );
+            },
+            icon: const Icon(Icons.sort),
+            iconSize: 26,
+          ),
         ];
       },
     );
@@ -145,8 +165,7 @@ class _ProfilesFragmentState extends State<ProfilesFragment> {
                           key: Key(state.profiles[i].id),
                           profile: state.profiles[i],
                           groupValue: state.currentProfileId,
-                          onChanged:
-                          globalState.appController.changeProfile,
+                          onChanged: globalState.appController.changeProfile,
                         ),
                       ),
                   ],
@@ -244,6 +263,7 @@ class ProfileItem extends StatelessWidget {
       LinearProgressIndicator(
         minHeight: 6,
         value: progress,
+        backgroundColor: context.colorScheme.primary.toSoft(),
       ),
       const SizedBox(
         height: 8,
@@ -369,6 +389,124 @@ class ProfileItem extends StatelessWidget {
         ),
         tileTitleAlignment: ListTileTitleAlignment.titleHeight,
       ),
+    );
+  }
+}
+
+class ReorderableProfiles extends StatefulWidget {
+  final List<Profile> profiles;
+
+  const ReorderableProfiles({
+    super.key,
+    required this.profiles,
+  });
+
+  @override
+  State<ReorderableProfiles> createState() => _ReorderableProfilesState();
+}
+
+class _ReorderableProfilesState extends State<ReorderableProfiles> {
+  late List<Profile> profiles;
+
+  @override
+  void initState() {
+    super.initState();
+    profiles = List.from(widget.profiles);
+  }
+
+  Widget proxyDecorator(
+    Widget child,
+    int index,
+    Animation<double> animation,
+  ) {
+    final profile = profiles[index];
+    return AnimatedBuilder(
+      animation: animation,
+      builder: (BuildContext context, Widget? child) {
+        final double animValue = Curves.easeInOut.transform(animation.value);
+        final double scale = lerpDouble(1, 1.02, animValue)!;
+        return Transform.scale(
+          scale: scale,
+          child: Container(
+            key: Key(profile.id),
+            padding: const EdgeInsets.symmetric(vertical: 4),
+            child: CommonCard(
+              type: CommonCardType.filled,
+              child: ListTile(
+                contentPadding: const EdgeInsets.only(
+                  right: 44,
+                  left: 16,
+                ),
+                title: Text(profile.label ?? profile.id),
+              ),
+            ),
+          ),
+        );
+      },
+      child: child,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Expanded(
+          flex: 1,
+          child: ReorderableListView.builder(
+            buildDefaultDragHandles: false,
+            padding: const EdgeInsets.all(12),
+            proxyDecorator: proxyDecorator,
+            onReorder: (int oldIndex, int newIndex) {
+              setState(() {
+                if (oldIndex < newIndex) {
+                  newIndex -= 1;
+                }
+                final profile = profiles.removeAt(oldIndex);
+                profiles.insert(newIndex, profile);
+              });
+            },
+            itemBuilder: (_, index) {
+              final profile = profiles[index];
+              return Container(
+                key: Key(profile.id),
+                padding: const EdgeInsets.symmetric(vertical: 4),
+                child: CommonCard(
+                  type: CommonCardType.filled,
+                  child: ListTile(
+                    contentPadding: const EdgeInsets.only(
+                      right: 16,
+                      left: 16,
+                    ),
+                    title: Text(profile.label ?? profile.id),
+                    trailing: ReorderableDragStartListener(
+                      index: index,
+                      child: const Icon(Icons.drag_handle),
+                    ),
+                  ),
+                ),
+              );
+            },
+            itemCount: profiles.length,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            vertical: 8,
+            horizontal: 12,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              IconButton(
+                onPressed: () {},
+                icon: Icon(Icons.check),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
