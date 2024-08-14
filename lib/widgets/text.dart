@@ -60,7 +60,7 @@ class EmojiText extends StatelessWidget {
       }
       spans.add(
         TextSpan(
-          text: " ${match.group(0)} ",
+          text:match.group(0),
           style: style?.copyWith(
             fontFamily: "Twemoji",
           ),

@@ -410,28 +410,28 @@ class _ReorderableProfilesState extends State<ReorderableProfiles> {
     final profile = profiles[index];
     return AnimatedBuilder(
       animation: animation,
-      builder: (BuildContext context, Widget? child) {
+      builder: (_, Widget? child) {
         final double animValue = Curves.easeInOut.transform(animation.value);
         final double scale = lerpDouble(1, 1.02, animValue)!;
         return Transform.scale(
           scale: scale,
-          child: Container(
-            key: Key(profile.id),
-            padding: const EdgeInsets.symmetric(vertical: 4),
-            child: CommonCard(
-              type: CommonCardType.filled,
-              child: ListTile(
-                contentPadding: const EdgeInsets.only(
-                  right: 44,
-                  left: 16,
-                ),
-                title: Text(profile.label ?? profile.id),
-              ),
-            ),
-          ),
+          child: child,
         );
       },
-      child: child,
+      child: Container(
+        key: Key(profile.id),
+        padding: const EdgeInsets.symmetric(vertical: 4),
+        child: CommonCard(
+          type: CommonCardType.filled,
+          child: ListTile(
+            contentPadding: const EdgeInsets.only(
+              right: 44,
+              left: 16,
+            ),
+            title: Text(profile.label ?? profile.id),
+          ),
+        ),
+      ),
     );
   }
 
@@ -447,6 +447,7 @@ class _ReorderableProfilesState extends State<ReorderableProfiles> {
             padding: const EdgeInsets.all(12),
             proxyDecorator: proxyDecorator,
             onReorder: (int oldIndex, int newIndex) {
+              if(oldIndex == newIndex) return;
               setState(() {
                 if (oldIndex < newIndex) {
                   newIndex -= 1;

@@ -153,14 +153,12 @@ class ProxyCard extends StatelessWidget {
                             proxy.name,
                           ),
                           builder: (_, desc, __) {
-                            return TooltipText(
-                              text: Text(
-                                desc,
-                                style: context.textTheme.bodySmall?.copyWith(
-                                  overflow: TextOverflow.ellipsis,
-                                  color: context.textTheme.bodySmall?.color
-                                      ?.toLight(),
-                                ),
+                            return EmojiText(
+                              desc,
+                              overflow: TextOverflow.ellipsis,
+                              style: context.textTheme.bodySmall?.copyWith(
+                                color: context.textTheme.bodySmall?.color
+                                    ?.toLight(),
                               ),
                             );
                           },
