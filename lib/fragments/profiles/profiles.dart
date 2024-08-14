@@ -499,8 +499,15 @@ class _ReorderableProfilesState extends State<ReorderableProfiles> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.check),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  globalState.appController.config.profiles = profiles;
+                },
+                icon: const Icon(
+                  Icons.check,
+                ),
+                iconSize: 32,
+                padding: const EdgeInsets.all(8),
               ),
             ],
           ),
