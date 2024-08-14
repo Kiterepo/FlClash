@@ -240,5 +240,6 @@
   "layout": "Layout",
   "tight": "Tight",
   "standard": "Standard",
-  "loose": "Loose"
+  "loose": "Loose",
+  "profilesSort": "Profiles sort"
 }

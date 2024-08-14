@@ -2469,6 +2469,16 @@ class AppLocalizations {
       args: [],
     );
   }
+
+  /// `Profiles sort`
+  String get profilesSort {
+    return Intl.message(
+      'Profiles sort',
+      name: 'profilesSort',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -96,7 +96,7 @@ class _ProfilesFragmentState extends State<ProfilesFragment> {
             onPressed: () {
               final profiles = globalState.appController.config.profiles;
               showSheet(
-                title: appLocalizations.proxiesSetting,
+                title: appLocalizations.profilesSort,
                 context: context,
                 builder: (_) => SizedBox(
                   height: 400,

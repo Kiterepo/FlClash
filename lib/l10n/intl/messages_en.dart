@@ -268,6 +268,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "profileUrlNullValidationDesc": MessageLookupByLibrary.simpleMessage(
             "Please input the profile URL"),
         "profiles": MessageLookupByLibrary.simpleMessage("Profiles"),
+        "profilesSort": MessageLookupByLibrary.simpleMessage("Profiles sort"),
         "project": MessageLookupByLibrary.simpleMessage("Project"),
         "proxies": MessageLookupByLibrary.simpleMessage("Proxies"),
         "proxiesSetting":
