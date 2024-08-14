@@ -105,14 +105,19 @@ class _NetworkDetectionState extends State<NetworkDetection> {
                           flex: 1,
                           child: FadeBox(
                             child: ipInfo != null
-                                ? Text(
-                                    countryCodeToEmoji(ipInfo.countryCode),
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .titleLarge
-                                        ?.copyWith(
-                                          fontFamily: "Twemoji",
-                                        ),
+                                ? Container(
+                                    alignment: Alignment.centerLeft,
+                                    height: globalState.appController.measure
+                                        .titleMediumHeight,
+                                    child: Text(
+                                      countryCodeToEmoji(ipInfo.countryCode),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleLarge
+                                          ?.copyWith(
+                                            fontFamily: "Twemoji",
+                                          ),
+                                    ),
                                   )
                                 : ValueListenableBuilder(
                                     valueListenable: timeoutNotifier,
@@ -122,7 +127,7 @@ class _NetworkDetectionState extends State<NetworkDetection> {
                                           appLocalizations.checkError,
                                           style: Theme.of(context)
                                               .textTheme
-                                              .titleLarge,
+                                              .titleMedium,
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                         );
