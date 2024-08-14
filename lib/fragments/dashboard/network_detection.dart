@@ -1,4 +1,3 @@
-import 'package:country_flags/country_flags.dart';
 import 'package:dio/dio.dart';
 import 'package:fl_clash/common/common.dart';
 import 'package:fl_clash/models/models.dart';
@@ -38,7 +37,6 @@ class _NetworkDetectionState extends State<NetworkDetection> {
     }
     cancelToken = CancelToken();
     final ipInfo = await request.checkIp(cancelToken: cancelToken);
-    if(cancelToken?.isCancelled == true) return;
     if (ipInfo == null) {
       timeoutNotifier.value = true;
       return;
@@ -69,6 +67,16 @@ class _NetworkDetectionState extends State<NetworkDetection> {
     timeoutNotifier.dispose();
   }
 
+  String countryCodeToEmoji(String countryCode) {
+    final String code = countryCode.toUpperCase();
+    if (code.length != 2) {
+      return countryCode;
+    }
+    final int firstLetter = code.codeUnitAt(0) - 0x41 + 0x1F1E6;
+    final int secondLetter = code.codeUnitAt(1) - 0x41 + 0x1F1E6;
+    return String.fromCharCode(firstLetter) + String.fromCharCode(secondLetter);
+  }
+
   @override
   Widget build(BuildContext context) {
     _checkIpDebounce ??= debounce(_checkIp);
@@ -97,10 +105,14 @@ class _NetworkDetectionState extends State<NetworkDetection> {
                           flex: 1,
                           child: FadeBox(
                             child: ipInfo != null
-                                ? CountryFlag.fromCountryCode(
-                                    ipInfo.countryCode,
-                                    width: 24,
-                                    height: 24,
+                                ? Text(
+                                    countryCodeToEmoji(ipInfo.countryCode),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleLarge
+                                        ?.copyWith(
+                                          fontFamily: "Twemoji",
+                                        ),
                                   )
                                 : ValueListenableBuilder(
                                     valueListenable: timeoutNotifier,
@@ -110,7 +122,7 @@ class _NetworkDetectionState extends State<NetworkDetection> {
                                           appLocalizations.checkError,
                                           style: Theme.of(context)
                                               .textTheme
-                                              .titleMedium,
+                                              .titleLarge,
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                         );

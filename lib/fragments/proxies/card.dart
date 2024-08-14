@@ -69,7 +69,7 @@ class ProxyCard extends StatelessWidget {
     if (type == ProxyCardType.min) {
       return SizedBox(
         height: measure.bodyMediumHeight * 1,
-        child: Text(
+        child: EmojiText(
           proxy.name,
           maxLines: 1,
           style: context.textTheme.bodyMedium?.copyWith(
@@ -80,7 +80,7 @@ class ProxyCard extends StatelessWidget {
     } else {
       return SizedBox(
         height: measure.bodyMediumHeight * 2,
-        child: Text(
+        child: EmojiText(
           proxy.name,
           maxLines: 2,
           style: context.textTheme.bodyMedium?.copyWith(

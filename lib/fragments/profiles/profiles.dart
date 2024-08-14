@@ -39,17 +39,6 @@ class _ProfilesFragmentState extends State<ProfilesFragment> {
     );
   }
 
-  _getColumns(ViewMode viewMode) {
-    switch (viewMode) {
-      case ViewMode.mobile:
-        return 1;
-      case ViewMode.laptop:
-        return 1;
-      case ViewMode.desktop:
-        return 2;
-    }
-  }
-
   _updateProfiles() async {
     final appController = globalState.appController;
     final config = appController.config;
