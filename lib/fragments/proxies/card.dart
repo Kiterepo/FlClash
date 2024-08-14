@@ -72,9 +72,8 @@ class ProxyCard extends StatelessWidget {
         child: EmojiText(
           proxy.name,
           maxLines: 1,
-          style: context.textTheme.bodyMedium?.copyWith(
-            overflow: TextOverflow.ellipsis,
-          ),
+          overflow: TextOverflow.ellipsis,
+          style: context.textTheme.bodyMedium,
         ),
       );
     } else {
@@ -83,9 +82,8 @@ class ProxyCard extends StatelessWidget {
         child: EmojiText(
           proxy.name,
           maxLines: 2,
-          style: context.textTheme.bodyMedium?.copyWith(
-            overflow: TextOverflow.ellipsis,
-          ),
+          overflow: TextOverflow.ellipsis,
+          style: context.textTheme.bodyMedium,
         ),
       );
     }

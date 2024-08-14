@@ -36,11 +36,13 @@ class EmojiText extends StatelessWidget {
   final String text;
   final TextStyle? style;
   final int? maxLines;
+  final TextOverflow? overflow;
 
   const EmojiText(
     this.text, {
     super.key,
     this.maxLines,
+    this.overflow,
     this.style,
   });
 
@@ -82,7 +84,7 @@ class EmojiText extends StatelessWidget {
   Widget build(BuildContext context) {
     return RichText(
       maxLines: maxLines,
-      overflow: style?.overflow ?? TextOverflow.ellipsis,
+      overflow: overflow ?? TextOverflow.clip,
       text: TextSpan(
         children: _buildTextSpans(text),
       ),
