@@ -38,6 +38,7 @@ class _NetworkDetectionState extends State<NetworkDetection> {
     }
     cancelToken = CancelToken();
     final ipInfo = await request.checkIp(cancelToken: cancelToken);
+    if(cancelToken?.isCancelled == true) return;
     if (ipInfo == null) {
       timeoutNotifier.value = true;
       return;
