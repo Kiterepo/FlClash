@@ -136,7 +136,7 @@ class _ProfilesFragmentState extends State<ProfilesFragment> {
           selector: (_, appState, config) => ProfilesSelectorState(
             profiles: config.profiles,
             currentProfileId: config.currentProfileId,
-            viewMode: appState.viewMode,
+            columns: other.getProfilesColumns(appState.viewWidth),
           ),
           builder: (context, state, child) {
             if (state.profiles.isEmpty) {
@@ -144,7 +144,6 @@ class _ProfilesFragmentState extends State<ProfilesFragment> {
                 label: appLocalizations.nullProfileDesc,
               );
             }
-            final columns = _getColumns(state.viewMode);
             return Align(
               alignment: Alignment.topCenter,
               child: SingleChildScrollView(
@@ -157,7 +156,7 @@ class _ProfilesFragmentState extends State<ProfilesFragment> {
                 child: Grid(
                   mainAxisSpacing: 16,
                   crossAxisSpacing: 16,
-                  crossAxisCount: columns,
+                  crossAxisCount: state.columns,
                   children: [
                     for (int i = 0; i < state.profiles.length; i++)
                       GridItem(

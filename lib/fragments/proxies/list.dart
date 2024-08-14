@@ -237,7 +237,10 @@ class _ProxiesListFragmentState extends State<ProxiesListFragment> {
           currentUnfoldSet: config.currentUnfoldSet,
           proxyCardType: config.proxyCardType,
           proxiesSortType: config.proxiesSortType,
-          columns: globalState.appController.columns,
+          columns: other.getProxiesColumns(
+            appState.viewWidth,
+            config.proxiesLayout,
+          ),
           sortNum: appState.sortNum,
         );
       },
